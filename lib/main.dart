@@ -11,13 +11,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.lightBlue,
+        primarySwatch: Colors.blue,
+      ),
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: Text('Age Calculator',
           ),
         ),
-        body: HomeScreen(),
+        body: SingleChildScrollView(child: HomeScreen()),
       ),
     );
   }

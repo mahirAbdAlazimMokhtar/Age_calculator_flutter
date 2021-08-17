@@ -1,8 +1,10 @@
 import 'package:age_calculator/Models/age_model.dart';
+import 'package:age_calculator/Models/duration_model.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
   Age _userAge = Age();
+  Duration _nextBirthDay = Duration();
   late BuildContext context;
   final TextEditingController _dateOfBirthController =
       TextEditingController(text: '01-01-1990');
@@ -233,9 +235,9 @@ Widget _buildAgeOutputRow(){
 }
 //this widget for build next birth day
   Widget _buildNextBirthDayOutputRow(){
-    Widget _buildYearsField = _buildOutputField("Years",_userAge.years.toString());
-    Widget _buildMonthsField = _buildOutputField("Months",_userAge.months.toString());
-    Widget _buildDaysField = _buildOutputField("Days",_userAge.day.toString());
+    Widget _buildYearsField = _buildOutputField("Years",'_');
+    Widget _buildMonthsField = _buildOutputField("Months",_nextBirthDay.months.toString());
+    Widget _buildDaysField = _buildOutputField("Days",_nextBirthDay.days.toString());
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

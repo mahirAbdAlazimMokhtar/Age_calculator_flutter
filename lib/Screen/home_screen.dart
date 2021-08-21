@@ -1,15 +1,31 @@
 import 'package:age_calculator/Models/age_model.dart';
 import 'package:age_calculator/Models/duration_model.dart';
+import 'package:age_calculator/date_utilties.dart';
+import 'package:age_calculator/logic/calcluator_age.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   Age _userAge = Age();
+
   Duration _nextBirthDay = Duration();
+
+  late DateTime futureDate;
+
+  late DateTime birthday;
+
   late BuildContext context;
+
   final TextEditingController _dateOfBirthController =
       TextEditingController(text: '01-01-1990');
+
   final TextEditingController _todayDateController =
       TextEditingController(text: '15-08-2012');
+
   @override
   Widget build(BuildContext context) {
     this.context = context;
@@ -19,7 +35,7 @@ class HomeScreen extends StatelessWidget {
     Widget _spaceBetweenElement = _spaceBetweenElements(20);
     Widget _todayDateHeading = _buildHeading("Today's Day");
     Widget _todayDateTextField = _buildTodayDateTextField();
-    Widget _buildClearCalculateButtonsRow = _buildClearCalaButtonsRow();
+    Widget _buildClearCalculateButtonsRow = _buildClearCalculatorButtonsRow();
     Widget _ageOutputHeading = _buildHeading('Age is');
     Widget _buildAgeOutputRows = _buildAgeOutputRow();
     Widget _buildNextBirthDayHeading = _buildHeading('Next Birth Day in');
@@ -47,7 +63,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //this widget for build header in the screen
   Widget _buildHeading(String title) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -61,7 +76,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-//this widget for build textField for today
   Widget _buildBirthDateTextField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +92,14 @@ class HomeScreen extends StatelessWidget {
                     firstDate: DateTime(1980),
                     lastDate: DateTime.now())
                 .then((date) {
-              //code to handle date
+                  if (date == null){
+                    _dateOfBirthController.text = '';
+                  } else{
+                   setState(() {
+                     _dateOfBirthController.text =DateHelper.formatDate(date);
+                   });
+                  }
+              birthday = date!;
             });
           },
         ),
@@ -86,7 +107,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //this widget for decoration the textField
   InputDecoration _getTextFieldWithCalenderIconDecoration() {
     return InputDecoration(
         //this attr to run fillColor
@@ -111,7 +131,6 @@ class HomeScreen extends StatelessWidget {
         hintText: '2002-04-20');
   }
 
-  //this widget for add space between an elements in screen
   Widget _spaceBetweenElements(double size) {
     return SizedBox(
       height: size,
@@ -134,6 +153,14 @@ class HomeScreen extends StatelessWidget {
                     firstDate: DateTime(1980),
                     lastDate: DateTime.now())
                 .then((date) {
+                if (date ==null){
+                  _todayDateController.text= '';
+                } else {
+                  setState(() {
+                    _todayDateController.text = DateHelper.formatDate(date);
+                  });
+                }
+              futureDate = date!;
               //code to handle date
             });
           },
@@ -142,13 +169,18 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //this widget for build button for calculate
   Widget _buildCalculateButton() {
     return ButtonTheme(
       minWidth: 160,
       height: 60,
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+         _userAge = AgeCalcluator().calcluatorAge(birthday, futureDate);
+         setState(() {
+
+         });
+          print (_userAge);
+        },
         color: Theme.of(context).primaryColor,
         child: Text(
           'CALCULATE',
@@ -158,13 +190,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //this widget for build clear button
   Widget _buildClearButton() {
     return ButtonTheme(
       minWidth: 160,
       height: 60,
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+
+        },
         color: Theme.of(context).primaryColor,
         child: Text(
           'CLEAR',
@@ -174,8 +207,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  //this widget for handle two buttons in row
-  Widget _buildClearCalaButtonsRow() {
+  Widget _buildClearCalculatorButtonsRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -185,7 +217,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-//this widget for build outPut filed
   Widget _buildOutputField(String outputTitle, String outputDate) {
     const double width = 115;
     const double height = 30;
@@ -219,11 +250,11 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
-  //this widget for custom row in Age is
+
 Widget _buildAgeOutputRow(){
   Widget _buildYearsField = _buildOutputField("Years",_userAge.years.toString());
   Widget _buildMonthsField = _buildOutputField("Months",_userAge.months.toString());
-  Widget _buildDaysField = _buildOutputField("Days",_userAge.day.toString());
+  Widget _buildDaysField = _buildOutputField("Days",_userAge.days.toString());
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -233,7 +264,7 @@ Widget _buildAgeOutputRow(){
       ],
     );
 }
-//this widget for build next birth day
+
   Widget _buildNextBirthDayOutputRow(){
     Widget _buildYearsField = _buildOutputField("Years",'_');
     Widget _buildMonthsField = _buildOutputField("Months",_nextBirthDay.months.toString());

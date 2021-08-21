@@ -5,7 +5,7 @@ import 'package:age/age.dart' as ag;
 
 class AgeCalcluator {
 
-  Age calcluatorAge (DateTime birthday , DateTime today) {
+  Age calcluatorAge(DateTime birthday, DateTime today) {
     //this method to calculate your age
     ag.AgeDuration age;
 
@@ -13,7 +13,6 @@ class AgeCalcluator {
     age = ag.Age.dateDifference(
         fromDate: birthday, toDate: today, includeToDate: false);
 
-    print('Your age is $age'); // Your age is Years: 30, Months: 0, Days: 4
 
     Age userAge = Age();
     userAge.years = age.years;
@@ -22,8 +21,15 @@ class AgeCalcluator {
     return userAge;
   }
 
-//   Duration calculatorNextBirthdayDuration (DateTime birthday , DateTime today){
-//     //this method to calculate next birthday
-//
+  Duration calculatorNextBirthdayDuration(DateTime birthday, DateTime today) {
+    //this method to calculate next birthday
+    ag.AgeDuration age;
+    age = ag.Age.dateDifference(
+        fromDate: birthday, toDate: today, includeToDate: false);
 
+    Duration userDuration = Duration();
+    userDuration.days = age.days;
+    userDuration.months = age.months;
+    return userDuration;
+  }
 }

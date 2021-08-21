@@ -66,11 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildHeading(String title) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.grey,
+      child: Card(
+        elevation: 5,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.grey.shade600,
+          ),
         ),
       ),
     );
@@ -175,11 +178,12 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 60,
       child: RaisedButton(
         onPressed: () {
-         _userAge = AgeCalcluator().calcluatorAge(birthday, futureDate);
-         setState(() {
 
+         setState(() {
+           _userAge = AgeCalcluator().calcluatorAge(birthday, futureDate);
+           _nextBirthDay = AgeCalcluator().calculatorNextBirthdayDuration(futureDate,birthday );
          });
-          print (_userAge);
+
         },
         color: Theme.of(context).primaryColor,
         child: Text(
@@ -196,7 +200,9 @@ class _HomeScreenState extends State<HomeScreen> {
       height: 60,
       child: RaisedButton(
         onPressed: () {
-
+          setState(() {
+            //TODO:
+          });
         },
         color: Theme.of(context).primaryColor,
         child: Text(
@@ -218,36 +224,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildOutputField(String outputTitle, String outputDate) {
-    const double width = 115;
+    const double width = 110;
     const double height = 30;
-    return Column(
-      children: [
-        Container(
-          color: Theme.of(context).primaryColor,
-          height: height,
-          width: width,
-          child: Center(
-            child: Text(
-              outputTitle,
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-        ),
-        Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-              border: Border.all(
+    return Card(
+      shadowColor: Colors.greenAccent,
+      elevation: 5.0,
+      child: Column(
+        children: [
+          Container(
             color: Theme.of(context).primaryColor,
-          )),
-          child: Center(
-            child: Text(
-              outputDate,
-              style: TextStyle(color: Colors.grey),
+            height: height,
+            width: width,
+            child: Center(
+              child: Text(
+                outputTitle,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
-        ),
-      ],
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Theme.of(context).primaryColor,
+            )),
+            child: Center(
+              child: Text(
+                outputDate,
+                style: TextStyle(color: Colors.black87,
+                fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
